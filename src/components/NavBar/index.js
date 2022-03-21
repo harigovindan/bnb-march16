@@ -4,9 +4,11 @@ import {
   NavLink,
   Bars,
   NavMenu,
+  MobileNavMenu,
   NavBtn,
   NavBtnLink,
-  Logo
+  Logo,
+  Cross,
 } from "./NavbarElements";
 import { Button1 } from "../ButtonElement";
 import { ethers, Contract } from "ethers";
@@ -21,14 +23,14 @@ const NavBar = ({
   setButtonTxt,
   setContract,
   setAccount,
-  setNetworkId
+  setNetworkId,
 }) => {
   const blockchainNetwork = "97";
   const connectToBlockchain = async () => {
     let detectProvider = await detectEthereumProvider();
     if (detectProvider) {
       const acct = await detectProvider.request({
-        method: "eth_requestAccounts"
+        method: "eth_requestAccounts",
       });
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const networkId = await provider.send("net_version", []);
@@ -47,7 +49,7 @@ const NavBar = ({
       // check();
     } else {
       notification.open({
-        message: "Please install metamask"
+        message: "Please install metamask",
       });
     }
   };
@@ -80,33 +82,38 @@ const NavBar = ({
     });
   }
 
+  const [showMobileNavbar, setShowMobileNavbar] = useState(false);
+
   return (
-    <>
-      <Nav>
-        <Logo>BNBBoost</Logo>
-        <Bars />
-        <NavMenu>
-          <NavLink to="/" activeStyle>
-            Audit
-          </NavLink>
-          <NavLink to="/" activeStyle>
-            Telegram
-          </NavLink>
-          <NavLink to="/" activeStyle>
-            Documentation
-          </NavLink>
-          <NavLink to="/" activeStyle>
-            Contract
-          </NavLink>
-          <NavLink to="/" activeStyle>
-            Youtube Contest
-          </NavLink>
-          <NavLink to="/" activeStyle>
-            NFT Airdrop
-          </NavLink>
-        </NavMenu>
-        <NavBtn>
+    <Nav>
+      <Logo>BNBBoost</Logo>
+      {/* {showMobileNavbar ? (
+        <Cross onClick={() => setShowMobileNavbar(!showMobileNavbar)} />
+      ) : (
+        <Bars onClick={() => setShowMobileNavbar(!showMobileNavbar)} />
+      )}
+      <NavMenu active={showMobileNavbar}>
+        <NavLink to="/" activeStyle>
+          Audit
+        </NavLink>
+        <NavLink to="/" activeStyle>
+          Telegram
+        </NavLink>
+        <NavLink to="/" activeStyle>
+          Documentation
+        </NavLink>
+        <NavLink to="/" activeStyle>
+          Contract
+        </NavLink>
+        <NavLink to="/" activeStyle>
+          Youtube Contest
+        </NavLink>
+        <NavLink to="/" activeStyle>
+          NFT Airdrop
+        </NavLink>
+        {showMobileNavbar && (
           <Button1
+            style={{ width: "80%", margin: "1rem auto" }}
             primary="true"
             dark="true"
             className
@@ -116,9 +123,21 @@ const NavBar = ({
               ? "Connect"
               : buttonTxt?.substring(0, 5) + "..."}
           </Button1>
-        </NavBtn>
-      </Nav>
-    </>
+        )}
+      </NavMenu>
+      <NavBtn>
+        <Button1
+          primary="true"
+          dark="true"
+          className
+          onClick={async () => await login()}
+        >
+          {buttonTxt === "Connect"
+            ? "Connect"
+            : buttonTxt?.substring(0, 5) + "..."}
+        </Button1>
+      </NavBtn> */}
+    </Nav>
   );
 };
 

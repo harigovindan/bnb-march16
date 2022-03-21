@@ -7,7 +7,7 @@ import {
   FooterLinkTitle,
   FooterLinksContainer,
   FooterLinksWrapper,
-  FooterWrap
+  FooterWrap,
 } from "./FooterElements";
 
 const Footer = () => {

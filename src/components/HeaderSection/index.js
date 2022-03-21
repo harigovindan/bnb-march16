@@ -20,16 +20,180 @@ import {
   ServicesIcon,
   ServicesData,
   ServicesP,
-  ServicesWrapper
+  ServicesWrapper,
 } from "./HeaderElements";
 
 import { Button } from "../ButtonElement";
 import axios from "axios";
+
+const headers = {
+  "Content-Type": "application/json",
+  accept: "application/json",
+  "X-API-Key":
+    "1W7yw0Y4MzO9vP4YulgrzWQghmd841N3Eej44g2mmPNg67CctOHtvq3JgwWtwwuy",
+};
+
 const HeaderSection = () => {
   const [hover, setHover] = useState(false);
+
+  const [contractInfo, setContractInfo] = useState({});
+
+  const [contractBalance, setContractBalance] = useState(0);
+
   const onHover = () => {
     setHover(!hover);
   };
+
+  const round = (number) => {
+    return !Number(number)
+      ? number
+      : number
+      ? Math.round(Number(number) * 10000) / 10000
+      : 0;
+  };
+
+  // getContractInfo:
+  // curl -X 'POST' \
+  //   'https://deep-index.moralis.io/api/v2/0xe28c3faC3e33556a3bC15C5c25B5976ab0C26E33/function?chain=bsc%20testnet&function_name=getContractInfo' \
+  //   -H 'accept: application/json' \
+  //   -H 'X-API-Key: 1W7yw0Y4MzO9vP4YulgrzWQghmd841N3Eej44g2mmPNg67CctOHtvq3JgwWtwwuy' \
+  //   -H 'Content-Type: application/json' \
+  //   -d '{
+  //   "abi": [{
+  // 				"constant": true,
+  // 				"inputs": [],
+  // 				"name": "getContractInfo",
+  // 				"outputs": [
+  // 					{
+  // 						"name": "",
+  // 						"type": "uint256"
+  // 					},
+  // 					{
+  // 						"name": "",
+  // 						"type": "uint256"
+  // 					},
+  // 					{
+  // 						"name": "",
+  // 						"type": "uint256"
+  // 					}
+  // 				],
+  // 				"payable": false,
+  // 				"stateMutability": "view",
+  // 				"type": "function"
+  // 			}],
+  //   "params": {}
+  // }'
+
+  const handleGetContractInfo = () => {
+    axios
+      .post(
+        "https://deep-index.moralis.io/api/v2/0xe28c3faC3e33556a3bC15C5c25B5976ab0C26E33/function?chain=bsc%20testnet&function_name=getContractInfo",
+        {
+          abi: [
+            {
+              constant: true,
+              inputs: [],
+              name: "getContractInfo",
+              outputs: [
+                {
+                  name: "",
+                  type: "uint256",
+                },
+                {
+                  name: "",
+                  type: "uint256",
+                },
+                {
+                  name: "",
+                  type: "uint256",
+                },
+              ],
+              payable: false,
+              stateMutability: "view",
+              type: "function",
+            },
+          ],
+          params: {},
+        },
+        {
+          headers: headers,
+        }
+      )
+      .then((response) => {
+        setContractInfo({
+          totalStaked: round(Number(response.data["0"]) / Math.pow(10, 18)),
+          referralRewards: round(Number(response.data["1"]) / Math.pow(10, 18)),
+          noOfUsers: response.data["2"],
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  // getContractBalance:
+  // curl -X 'POST' \
+  //   'https://deep-index.moralis.io/api/v2/0xe28c3faC3e33556a3bC15C5c25B5976ab0C26E33/function?chain=bsc%20testnet&function_name=getContractBalance' \
+  //   -H 'accept: application/json' \
+  //   -H 'X-API-Key: 1W7yw0Y4MzO9vP4YulgrzWQghmd841N3Eej44g2mmPNg67CctOHtvq3JgwWtwwuy' \
+  //   -H 'Content-Type: application/json' \
+  //   -d '{
+  //   "abi": [{
+  // 				"constant": true,
+  // 				"inputs": [],
+  // 				"name": "getContractBalance",
+  // 				"outputs": [
+  // 					{
+  // 						"name": "",
+  // 						"type": "uint256"
+  // 					}
+  // 				],
+  // 				"payable": false,
+  // 				"stateMutability": "view",
+  // 				"type": "function"
+  // 			}],
+  //   "params": {}
+  // }'
+
+  const handleGetContractBalance = () => {
+    axios
+      .post(
+        "https://deep-index.moralis.io/api/v2/0xe28c3faC3e33556a3bC15C5c25B5976ab0C26E33/function?chain=bsc%20testnet&function_name=getContractBalance",
+        {
+          abi: [
+            {
+              constant: true,
+              inputs: [],
+              name: "getContractBalance",
+              outputs: [
+                {
+                  name: "",
+                  type: "uint256",
+                },
+              ],
+              payable: false,
+              stateMutability: "view",
+              type: "function",
+            },
+          ],
+          params: {},
+        },
+        {
+          headers: headers,
+        }
+      )
+      .then((response) => {
+        setContractBalance(round(Number(response.data) / Math.pow(10, 18)));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  useEffect(() => {
+    handleGetContractInfo();
+    handleGetContractBalance();
+  }, []);
 
   return (
     <HeroContainer>
@@ -70,23 +234,38 @@ const HeaderSection = () => {
           <Col xs={24} sm={24} md={8} lg={8} xl={8}>
             <HeroStatistics>
               <ServicesCard>
-                <ServicesP>BNBBoost Data</ServicesP>
+                <div
+                  style={{
+                    fontSize: "1.5rem",
+                    textAlign: "center",
+                    padding: "5rem 0",
+                    color: "#000",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Coming Soon!
+                </div>
+                {/* <ServicesP>BNBBoost Data</ServicesP>
                 <ServicesData>
                   <ServicesH2>Total Staked </ServicesH2>
-                  <ServicesH21>4459751.828</ServicesH21>
+                  <ServicesH21>
+                    {contractInfo?.totalStaked ?? 0} BNB
+                  </ServicesH21>
                 </ServicesData>
                 <ServicesData>
                   <ServicesH2>Total Users</ServicesH2>
-                  <ServicesH21>1000</ServicesH21>
+                  <ServicesH21>{contractInfo?.noOfUsers ?? 0}</ServicesH21>
                 </ServicesData>
                 <ServicesData>
                   <ServicesH2>Ref Rewards</ServicesH2>
-                  <ServicesH21>435490.049</ServicesH21>
+                  <ServicesH21>
+                    {contractInfo?.referralRewards ?? 0} BNB
+                  </ServicesH21>
                 </ServicesData>
                 <ServicesData>
                   <ServicesH2>Contract Balance</ServicesH2>
-                  <ServicesH21>435490 BNB</ServicesH21>
-                </ServicesData>
+                  <ServicesH21>{contractBalance ?? 0} BNB</ServicesH21>
+                </ServicesData> */}
               </ServicesCard>
             </HeroStatistics>
           </Col>
@@ -97,59 +276,3 @@ const HeaderSection = () => {
 };
 
 export default HeaderSection;
-
-// getContractInfo:
-// curl -X 'POST' \
-//   'https://deep-index.moralis.io/api/v2/0xe28c3faC3e33556a3bC15C5c25B5976ab0C26E33/function?chain=bsc%20testnet&function_name=getContractInfo' \
-//   -H 'accept: application/json' \
-//   -H 'X-API-Key: 1W7yw0Y4MzO9vP4YulgrzWQghmd841N3Eej44g2mmPNg67CctOHtvq3JgwWtwwuy' \
-//   -H 'Content-Type: application/json' \
-//   -d '{
-//   "abi": [{
-// 				"constant": true,
-// 				"inputs": [],
-// 				"name": "getContractInfo",
-// 				"outputs": [
-// 					{
-// 						"name": "",
-// 						"type": "uint256"
-// 					},
-// 					{
-// 						"name": "",
-// 						"type": "uint256"
-// 					},
-// 					{
-// 						"name": "",
-// 						"type": "uint256"
-// 					}
-// 				],
-// 				"payable": false,
-// 				"stateMutability": "view",
-// 				"type": "function"
-// 			}],
-//   "params": {}
-// }'
-
-// getContractBalance:
-// curl -X 'POST' \
-//   'https://deep-index.moralis.io/api/v2/0xe28c3faC3e33556a3bC15C5c25B5976ab0C26E33/function?chain=bsc%20testnet&function_name=getContractBalance' \
-//   -H 'accept: application/json' \
-//   -H 'X-API-Key: 1W7yw0Y4MzO9vP4YulgrzWQghmd841N3Eej44g2mmPNg67CctOHtvq3JgwWtwwuy' \
-//   -H 'Content-Type: application/json' \
-//   -d '{
-//   "abi": [{
-// 				"constant": true,
-// 				"inputs": [],
-// 				"name": "getContractBalance",
-// 				"outputs": [
-// 					{
-// 						"name": "",
-// 						"type": "uint256"
-// 					}
-// 				],
-// 				"payable": false,
-// 				"stateMutability": "view",
-// 				"type": "function"
-// 			}],
-//   "params": {}
-// }'

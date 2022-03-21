@@ -12,7 +12,7 @@ import {
   ServicesData,
   ServicesP,
   Input,
-  ServicesWrapper
+  ServicesWrapper,
 } from "./InvestmentsElements";
 import { Button } from "../ButtonElement";
 import { Row, Col } from "antd";
@@ -25,7 +25,7 @@ const Investments = ({
   setButtonTxt,
   setAccount,
   setContract,
-  setNetworkId
+  setNetworkId,
 }) => {
   const [plans, setPlans] = useState([
     {
@@ -44,7 +44,7 @@ const Investments = ({
       period: "7",
       dailyProfit: "8",
       totalProfit: "56",
-      withdrawl: "Anytime"
+      withdrawl: "Anytime",
     },
     {
       period: "7",
@@ -62,7 +62,7 @@ const Investments = ({
       period: "7",
       dailyProfit: "8",
       totalProfit: "56",
-      withdrawl: "Anytime"
+      withdrawl: "Anytime",
     },
     {
       period: "7",
@@ -80,7 +80,7 @@ const Investments = ({
       period: "7",
       dailyProfit: "8",
       totalProfit: "56",
-      withdrawl: "Anytime"
+      withdrawl: "Anytime",
     },
     {
       period: "7",
@@ -98,11 +98,9 @@ const Investments = ({
       period: "7",
       dailyProfit: "8",
       totalProfit: "56",
-      withdrawl: "Anytime"
-    }
+      withdrawl: "Anytime",
+    },
   ]);
-
-  const [depositCount, setDepositCount] = useState(0);
 
   const [planValues, setPlanValues] = useState({});
 
@@ -111,48 +109,49 @@ const Investments = ({
       days: "14",
       dailyProfit: "8",
       totalProfit: "112",
-      withdrawlTime: "Any Time"
+      withdrawlTime: "Any Time",
     },
     {
       days: "21",
       dailyProfit: "9",
       totalProfit: "189",
-      withdrawlTime: "Any Time"
+      withdrawlTime: "Any Time",
     },
     {
       days: "28",
       dailyProfit: "10",
       totalProfit: "280",
-      withdrawlTime: "Any Time"
+      withdrawlTime: "Any Time",
     },
     {
       days: "14",
       dailyProfit: "8",
       totalProfit: "293",
-      withdrawlTime: "At the end"
+      withdrawlTime: "At the end",
     },
     {
       days: "21",
       dailyProfit: "8",
       totalProfit: "503",
-      withdrawlTime: "At the end"
+      withdrawlTime: "At the end",
     },
     {
       days: "28",
       dailyProfit: "8",
       totalProfit: "862",
-      withdrawlTime: "At the end"
-    }
+      withdrawlTime: "At the end",
+    },
   ];
 
   const getDate = (dt) => dt.toLocaleDateString("pt-PT");
 
   const handleFetchDeposits = async () => {
-    console.log("hello");
     if (networkId === "97") {
-      const depositCount = await contract.getUserAmountOfDeposits(account); //get total array
-      if (depositCount > 0) {
-        for (let i = 0; i < parseInt(depositCount._hex, 16); i++) {
+      let count = await contract.getUserAmountOfDeposits(account); //get total array
+      count = parseInt(count._hex, 16);
+      let planValues = { ...planValues };
+      if (count > 0) {
+        for (let i = 0; i < count; i++) {
           const depositInfo = await contract.getUserDepositInfo(account, i); //loop to get indidivual info
           const values = {
             planNumber: depositInfo.plan,
@@ -160,19 +159,19 @@ const Investments = ({
             dailyProfit: parseInt(depositInfo.percent._hex, 16) / 10,
             totalProfit: planData[depositInfo.plan].totalProfit,
             start: getDate(new Date(parseFloat(depositInfo.start) * 1000)),
-            end: getDate(new Date(parseFloat(depositInfo.finish) * 1000))
+            end: getDate(new Date(parseFloat(depositInfo.finish) * 1000)),
           };
-          setPlanValues({
+          planValues = {
             ...planValues,
-            [`plan${i}`]: values
-          });
-          setDepositCount(depositCount);
+            [`plan${i}`]: values,
+          };
         }
+        setPlanValues({
+          ...planValues,
+        });
       } else {
-        setDepositCount(0);
         setPlanValues({});
       }
-      // console.log(planValues);
     } else {
       alert("Please connect to BSC Mainnet");
     }
@@ -181,8 +180,6 @@ const Investments = ({
   useEffect(() => {
     if (contract && account && networkId) {
       handleFetchDeposits();
-    } else {
-      setDepositCount(0);
     }
   }, [contract, account, networkId]);
 
@@ -192,35 +189,43 @@ const Investments = ({
         <u>Your Stakes</u>
       </ServicesH1>
       <Row gutter={[40, 40]}>
-        {[...Array(depositCount)].map((plan, i) => (
-          <Col xs={24} sm={24} md={8} lg={8} xl={8} key={i}>
-            <ServicesCard>
-              <ServicesP>
-                Plan {planValues[`plan${i}`].planNumber + 1}
-              </ServicesP>
-              <ServicesData>
-                <ServicesH2>Plan </ServicesH2>
-                <ServicesH21>{planValues[`plan${i}`].period} Days</ServicesH21>
-              </ServicesData>
-              <ServicesData>
-                <ServicesH2>Daily Profit </ServicesH2>
-                <ServicesH21>{planValues[`plan${i}`].dailyProfit}%</ServicesH21>
-              </ServicesData>
-              <ServicesData>
-                <ServicesH2>Total Profit </ServicesH2>
-                <ServicesH21>{planValues[`plan${i}`].totalProfit}%</ServicesH21>
-              </ServicesData>
-              <ServicesData>
-                <ServicesH2>Start Date & Time </ServicesH2>
-                <ServicesH21>{planValues[`plan${i}`].start}</ServicesH21>
-              </ServicesData>
-              <ServicesData>
-                <ServicesH2>End Date & Time </ServicesH2>
-                <ServicesH21>{planValues[`plan${i}`].end}</ServicesH21>
-              </ServicesData>
-            </ServicesCard>
-          </Col>
-        ))}
+        {planValues &&
+          Object.keys(planValues).length &&
+          [...Array(Object.keys(planValues).length)].map((_, i) => (
+            <Col xs={24} sm={24} md={8} lg={8} xl={8} key={i}>
+              <ServicesCard>
+                <ServicesP>
+                  Plan {planValues[`plan${i}`].planNumber + 1}
+                </ServicesP>
+                <ServicesData>
+                  <ServicesH2>Plan </ServicesH2>
+                  <ServicesH21>
+                    {planValues[`plan${i}`].period} Days
+                  </ServicesH21>
+                </ServicesData>
+                <ServicesData>
+                  <ServicesH2>Daily Profit </ServicesH2>
+                  <ServicesH21>
+                    {planValues[`plan${i}`].dailyProfit}%
+                  </ServicesH21>
+                </ServicesData>
+                <ServicesData>
+                  <ServicesH2>Total Profit </ServicesH2>
+                  <ServicesH21>
+                    {planValues[`plan${i}`].totalProfit}%
+                  </ServicesH21>
+                </ServicesData>
+                <ServicesData>
+                  <ServicesH2>Start Date & Time </ServicesH2>
+                  <ServicesH21>{planValues[`plan${i}`].start}</ServicesH21>
+                </ServicesData>
+                <ServicesData>
+                  <ServicesH2>End Date & Time </ServicesH2>
+                  <ServicesH21>{planValues[`plan${i}`].end}</ServicesH21>
+                </ServicesData>
+              </ServicesCard>
+            </Col>
+          ))}
       </Row>
     </ServicesContainer>
   );

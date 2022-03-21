@@ -20,7 +20,7 @@ import {
   ServicesData,
   ServicesP,
   ServicesWrapper,
-  ServicesRef
+  ServicesRef,
 } from "./StakingElements";
 import { Row, Col, notification } from "antd";
 import { Button } from "../ButtonElement";
@@ -33,7 +33,7 @@ const StakingSection = ({
   setButtonTxt,
   setAccount,
   setContract,
-  setNetworkId
+  setNetworkId,
 }) => {
   const [hover, setHover] = useState(false);
   const onHover = () => {
@@ -50,7 +50,7 @@ const StakingSection = ({
     withdrawn: "****",
     holdBonus: "****",
     referralAmount: "****",
-    referralCount: "****"
+    referralCount: "****",
   });
 
   const handleWithdraw = async () => {
@@ -64,6 +64,14 @@ const StakingSection = ({
         // alert("Send finished!");
       });
     }
+  };
+
+  const round = (number) => {
+    return !Number(number)
+      ? number
+      : number
+      ? Math.round(Number(number) * 10000) / 10000
+      : 0;
   };
 
   const handleFetchValues = async () => {
@@ -90,11 +98,11 @@ const StakingSection = ({
       withdrawn: parseInt(withdrawn._hex, 16) / Math.pow(10, 18),
       holdBonus: parseFloat(holdBonus._hex, 16),
       referralAmount: parseInt(referralAmount._hex, 16) / Math.pow(10, 18),
-      referralCount: parseInt(referralCount._hex, 16)
+      referralCount: parseInt(referralCount._hex, 16),
     });
   };
 
-  useEffect(async () => {
+  useEffect(() => {
     if (account && contract && networkId) {
       handleFetchValues();
     } else {
@@ -104,10 +112,19 @@ const StakingSection = ({
         withdrawn: "****",
         holdBonus: "****",
         referralAmount: "****",
-        referralCount: "****"
+        referralCount: "****",
       });
     }
   }, [account, contract, networkId]);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      if (account && contract && networkId) {
+        handleFetchValues();
+      }
+    }, 10000);
+    return () => clearInterval(intervalId);
+  }, []);
 
   return (
     <HeroContainer>
@@ -125,11 +142,11 @@ const StakingSection = ({
                 </ServicesData>
                 <ServicesData>
                   <ServicesH2>Available for withdrawal</ServicesH2>
-                  <ServicesH21>{values?.dividends ?? 0} BNB</ServicesH21>
+                  <ServicesH21>{round(values?.dividends)} BNB</ServicesH21>
                 </ServicesData>
                 <ServicesData>
                   <ServicesH2>Withdrawn</ServicesH2>
-                  <ServicesH21>{values?.withdrawn ?? 0} BNB</ServicesH21>
+                  <ServicesH21>{round(values?.withdrawn)} BNB</ServicesH21>
                 </ServicesData>
                 <ServicesData>
                   <ServicesH2>Hold Bonus</ServicesH2>
@@ -168,14 +185,14 @@ const StakingSection = ({
                       display: "inline-block",
                       width: "calc(30% - 5px)",
                       padding: "5px",
-                      marginLeft: "5px"
+                      marginLeft: "5px",
                     }}
                     onClick={() => {
                       navigator.clipboard.writeText(
                         "https://bscstaker.io?ref=" + (account ?? walletAddress)
                       );
                       notification["success"]({
-                        message: "Referral link copied to clipboard!"
+                        message: "Referral link copied to clipboard!",
                       });
                     }}
                   >

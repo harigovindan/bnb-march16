@@ -53,7 +53,7 @@ export const Button1 = styled(Link)`
   &:hover {
     transform: scale(1.05);
     /* /* transition: all 0.2s ease-in-out; */
-    /* background: ${({ primary }) => (primary ? "#fff" : "#01bf71")}; */ 
+    /* background: ${({ primary }) => (primary ? "#fff" : "#01bf71")}; */
     color: #010606;
   }
 `;

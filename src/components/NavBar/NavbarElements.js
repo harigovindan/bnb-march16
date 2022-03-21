@@ -1,8 +1,9 @@
-import { FaBars } from "react-icons/fa";
+import { FaBars, FaTimes } from "react-icons/fa";
 import { NavLink as Link } from "react-router-dom";
 import styled from "styled-components";
 
 export const Nav = styled.nav`
+  position: relative;
   background: #000;
   height: 80px;
   display: flex;
@@ -38,6 +39,21 @@ export const NavLink = styled(Link)`
   } */
 `;
 
+export const Cross = styled(FaTimes)`
+  display: none;
+  color: #fff;
+
+  @media screen and (max-width: 768px) {
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translate(-100%, 75%);
+    font-size: 1.8rem;
+    cursor: pointer;
+  }
+`;
+
 export const Bars = styled(FaBars)`
   display: none;
   color: #fff;
@@ -67,6 +83,33 @@ export const NavMenu = styled.div`
 
   @media screen and (max-width: 768px) {
     display: none;
+    ${({ active }) =>
+      active &&
+      `
+    display: block;
+    height: 100vh;
+    width: 100%;
+    position: fixed;
+    background: #000;
+    top: 50px;
+    left:
+    z-index: 1;
+    ${NavLink} {
+      display: block;
+      text-align: center;
+      height: 30px;
+      margin-top: 10px;
+      font-size: 1.2rem;
+    }
+`}
+  }
+`;
+
+export const MobileNavMenu = styled.div`
+  display: none;
+  @media screen and (max-width: 768px) {
+    display: block;
+    width: 100%;
   }
 `;
 
