@@ -45,7 +45,7 @@ const Home = () => {
       <HeaderSection />
       <Services {...props} />
       <StakingSection {...props} />
-      <Investments {...props} />
+      {/* <Investments {...props} /> */}
       {/* <Footer /> */}
     </Router>
   );
