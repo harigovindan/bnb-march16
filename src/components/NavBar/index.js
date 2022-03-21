@@ -16,6 +16,7 @@ import detectEthereumProvider from "@metamask/detect-provider";
 import SimpleStorage from "./../contracts/BNBBoosterMetadata.json";
 import Web3 from "web3";
 import { notification } from "antd";
+import binanceLogo from "../../assets/binanceLogo.png";
 
 const NavBar = ({
   buttonTxt,
@@ -86,17 +87,24 @@ const NavBar = ({
 
   return (
     <Nav>
+      <img src={binanceLogo} alt="Binance Logo" style={{ width: "50px" }} />
       <Logo>BNBHodler</Logo>
-      {/* {showMobileNavbar ? (
+      {showMobileNavbar ? (
         <Cross onClick={() => setShowMobileNavbar(!showMobileNavbar)} />
       ) : (
         <Bars onClick={() => setShowMobileNavbar(!showMobileNavbar)} />
       )}
       <NavMenu active={showMobileNavbar}>
-        <NavLink to="/" activeStyle>
-          Audit
+        <NavLink href="https://twitter.com/Bnbhoddler" target="_blank">
+          Twitter
         </NavLink>
-        <NavLink to="/" activeStyle>
+        <NavLink href="https://discord.com/invite/PqHaAnZAnk" target="_blank">
+          Discord
+        </NavLink>
+        {/* <NavLink to="/" activeStyle>
+          Audit
+        </NavLink> */}
+        {/* <NavLink to="/" activeStyle>
           Telegram
         </NavLink>
         <NavLink to="/" activeStyle>
@@ -110,8 +118,8 @@ const NavBar = ({
         </NavLink>
         <NavLink to="/" activeStyle>
           NFT Airdrop
-        </NavLink>
-        {showMobileNavbar && (
+        </NavLink> */}
+        {/* {showMobileNavbar && (
           <Button1
             style={{ width: "80%", margin: "1rem auto" }}
             primary="true"
@@ -123,9 +131,9 @@ const NavBar = ({
               ? "Connect"
               : buttonTxt?.substring(0, 5) + "..."}
           </Button1>
-        )}
+        )} */}
       </NavMenu>
-      <NavBtn>
+      {/* <NavBtn>
         <Button1
           primary="true"
           dark="true"

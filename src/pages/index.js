@@ -27,7 +27,7 @@ const Home = () => {
     setButtonTxt,
     setAccount,
     setContract,
-    setNetworkId
+    setNetworkId,
   };
 
   const [isOpen, setIsOpen] = useState(false);
@@ -46,7 +46,7 @@ const Home = () => {
       <Services {...props} />
       <StakingSection {...props} />
       <Investments {...props} />
-      <Footer />
+      {/* <Footer /> */}
     </Router>
   );
 };

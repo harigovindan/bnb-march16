@@ -4,36 +4,39 @@ import styled from "styled-components";
 
 export const Nav = styled.nav`
   position: relative;
-  background: #000;
+  background: #0c0c0c;
   height: 80px;
-  display: flex;
-  justify-content: space-between;
-  padding: 0.5rem calc((100vw - 1000px) / 2);
+  padding: 1rem 3rem;
   z-index: 10;
 
   /* Third Nav */
   /* justify-content: flex-start; */
+  @media screen and (max-width: 768px) {
+    padding: 1rem 2rem;
+  }
+`;
+
+export const LogoImage = styled.img`
+  width: 50px;
+  display: inline-block;
+  vertical-align: middle;
 `;
 
 export const Logo = styled.div`
   color: white;
   font-size: 25px;
-  display: flex;
-  align-items: center;
-  text-decoration: none;
   padding: 0 1rem;
-  height: 100%;
+  display: inline-block;
+  vertical-align: middle;
 `;
 
-export const NavLink = styled(Link)`
+export const NavLink = styled.a`
   color: #fff;
-  display: flex;
-  align-items: center;
   text-decoration: none;
   padding: 0 1rem;
   height: 100%;
   cursor: pointer;
-
+  display: inline-block;
   /* &.active {
     color: #15cdfc;
   } */
@@ -70,17 +73,9 @@ export const Bars = styled(FaBars)`
 `;
 
 export const NavMenu = styled.div`
-  display: flex;
-  align-items: center;
-  margin-right: -24px;
-
-  /* Second Nav */
-  /* margin-right: 24px; */
-
-  /* Third Nav */
-  /* width: 100vw;
-  white-space: nowrap; */
-
+  display: inline-block;
+  width: 80%;
+  text-align: right;
   @media screen and (max-width: 768px) {
     display: none;
     ${({ active }) =>
@@ -91,8 +86,8 @@ export const NavMenu = styled.div`
     width: 100%;
     position: fixed;
     background: #000;
-    top: 50px;
-    left:
+    top: 60px;
+    left: 0;
     z-index: 1;
     ${NavLink} {
       display: block;
@@ -114,10 +109,8 @@ export const MobileNavMenu = styled.div`
 `;
 
 export const NavBtn = styled.nav`
-  display: flex;
-  align-items: center;
-  margin-right: 24px;
-
+  margin-left: 24px;
+  display: inline-block;
   /* Third Nav */
   /* justify-content: flex-end;
   width: 100vw; */

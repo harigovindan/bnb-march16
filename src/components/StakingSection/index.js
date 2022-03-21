@@ -176,7 +176,7 @@ const StakingSection = ({
                     type="search"
                     placeholder="Your referral link"
                     value={
-                      "https://bscstaker.io?ref=" + (account ?? walletAddress)
+                      "https://bnbhodler.com?ref=" + (account ?? walletAddress)
                     }
                   />
 
@@ -189,7 +189,8 @@ const StakingSection = ({
                     }}
                     onClick={() => {
                       navigator.clipboard.writeText(
-                        "https://bscstaker.io?ref=" + (account ?? walletAddress)
+                        "https://bnbhodler.com?ref=" +
+                          (account ?? walletAddress)
                       );
                       notification["success"]({
                         message: "Referral link copied to clipboard!",
@@ -218,7 +219,9 @@ const StakingSection = ({
           <Col xs={24} sm={24} md={8} lg={8} xl={8}>
             <HeroStatistics style={{ height: "100%" }}>
               <ServicesCard style={{ height: "100%" }}>
-                <ServicesP>Earn BNB By Inviting People To BNBHodler</ServicesP>
+                <ServicesP style={{ fontWeight: "bold" }}>
+                  Earn BNB By Inviting People To BNBHodler
+                </ServicesP>
                 <ServicesData>
                   <ServicesH2>Level 1</ServicesH2>
                   <ServicesH21>5%</ServicesH21>
