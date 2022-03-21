@@ -201,8 +201,8 @@ const HeaderSection = () => {
         <Row gutter={[40, 20]} align="middle">
           <Col xs={24} sm={24} md={16} lg={16} xl={16}>
             <HeroP>
-              The BNBBoost smart-contract provides the opportunity to invest any
-              amount of BNB (from 0.1 BNB) in the contract.
+              The BNBHodler smart-contract provides the opportunity to invest
+              any amount of BNB (from 0.1 BNB) in the contract.
             </HeroP>
             <HeroP>
               Get 112% to 862% return on investment in 14 to 28 days (from 8% to

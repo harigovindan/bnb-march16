@@ -218,7 +218,7 @@ const StakingSection = ({
           <Col xs={24} sm={24} md={8} lg={8} xl={8}>
             <HeroStatistics style={{ height: "100%" }}>
               <ServicesCard style={{ height: "100%" }}>
-                <ServicesP>Earn BNB By Inviting People To BNBBoost</ServicesP>
+                <ServicesP>Earn BNB By Inviting People To BNBHodler</ServicesP>
                 <ServicesData>
                   <ServicesH2>Level 1</ServicesH2>
                   <ServicesH21>5%</ServicesH21>

@@ -86,7 +86,7 @@ const NavBar = ({
 
   return (
     <Nav>
-      <Logo>BNBBoost</Logo>
+      <Logo>BNBHodler</Logo>
       {/* {showMobileNavbar ? (
         <Cross onClick={() => setShowMobileNavbar(!showMobileNavbar)} />
       ) : (
